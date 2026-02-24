@@ -1,4 +1,4 @@
-import { createSignal, onMount } from "solid-js";
+import { createSignal, onMount, Show, Match, Switch } from "solid-js";
 import { Toaster } from "@/components/sonner";
 import {
   Card,
@@ -10,10 +10,16 @@ import {
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
+import LogUsage from "@/pages/LogUsage";
+import UsageHistory from "@/pages/UsageHistory";
+import SubmitDeclaration from "@/pages/SubmitDeclaration";
+import Classifications from "@/pages/Classifications";
+import Alerts from "@/pages/Alerts";
 
 type User = { name: string; email: string; role: string };
+type Page = "log" | "history" | "declare" | "classifications" | "alerts";
 
-async function login(email: string, password: string) {
+async function loginRequest(email: string, password: string) {
   const res = await fetch("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -28,14 +34,25 @@ async function login(email: string, password: string) {
   return body.user as User;
 }
 
+const NAV_STUDENT: { page: Page; label: string }[] = [
+  { page: "log", label: "Log Usage" },
+  { page: "history", label: "History" },
+  { page: "declare", label: "Declaration" },
+];
+
+const NAV_ADMIN: { page: Page; label: string }[] = [
+  { page: "classifications", label: "Classifications" },
+  { page: "alerts", label: "Alerts" },
+];
+
 function App() {
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
   const [error, setError] = createSignal("");
   const [user, setUser] = createSignal<User | null>(null);
   const [loading, setLoading] = createSignal(true);
+  const [page, setPage] = createSignal<Page>("log");
 
-  // On mount: try to restore session, or auto-login with seed user in dev
   onMount(async () => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -43,20 +60,21 @@ function App() {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
-        setUser(await res.json());
+        const u = (await res.json()) as User;
+        setUser(u);
+        setPage(u.role === "admin" ? "classifications" : "log");
         setLoading(false);
         return;
       }
       localStorage.removeItem("token");
     }
 
-    // Dev auto-login with seeded student
     if (import.meta.env.DEV) {
       try {
-        const u = await login("student@ntnu.no", "password123");
+        const u = await loginRequest("student@ntnu.no", "password123");
         setUser(u);
       } catch {
-        // Seed user doesn't exist yet, show login form
+        // Seed user doesn't exist yet
       }
     }
     setLoading(false);
@@ -66,77 +84,125 @@ function App() {
     e.preventDefault();
     setError("");
     try {
-      const u = await login(email(), password());
+      const u = await loginRequest(email(), password());
       setUser(u);
+      setPage(u.role === "admin" ? "classifications" : "log");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     }
   };
 
-  if (loading()) {
-    return null;
-  }
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    setPage("log");
+  };
 
   return (
-    <div class="min-h-screen flex items-center justify-center">
-      {user() ? (
-        <Card class="w-full max-w-sm">
-          <CardHeader>
-            <CardTitle>Welcome, {user()!.name}</CardTitle>
-            <CardDescription>Role: {user()!.role}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button
-              variant="outline"
-              class="w-full"
-              onClick={() => {
-                localStorage.removeItem("token");
-                setUser(null);
-              }}
-            >
-              Log out
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <Card class="w-full max-w-sm">
-          <CardHeader>
-            <CardTitle>AIGuidebook</CardTitle>
-            <CardDescription>Log in to continue</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} class="grid gap-4">
-              <div class="grid gap-2">
-                <Label for="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="student@ntnu.no"
-                  value={email()}
-                  onInput={(e) => setEmail(e.currentTarget.value)}
-                />
-              </div>
-              <div class="grid gap-2">
-                <Label for="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password()}
-                  onInput={(e) => setPassword(e.currentTarget.value)}
-                />
-              </div>
-              {error() && (
-                <p class="text-destructive text-sm">{error()}</p>
-              )}
-              <Button type="submit" class="w-full">
-                Log in
+    <Show when={!loading()} fallback={<div class="min-h-screen bg-background" />}>
+    <div class="min-h-screen bg-background">
+      <Show
+        when={user()}
+        fallback={
+          <div class="flex min-h-screen items-center justify-center">
+            <Card class="w-full max-w-sm">
+              <CardHeader>
+                <CardTitle>AIGuidebook</CardTitle>
+                <CardDescription>Log in to continue</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleLogin} class="grid gap-4">
+                  <div class="grid gap-2">
+                    <Label for="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="student@ntnu.no"
+                      value={email()}
+                      onInput={(e) => setEmail(e.currentTarget.value)}
+                    />
+                  </div>
+                  <div class="grid gap-2">
+                    <Label for="password">Password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={password()}
+                      onInput={(e) => setPassword(e.currentTarget.value)}
+                    />
+                  </div>
+                  {error() && (
+                    <p class="text-destructive text-sm">{error()}</p>
+                  )}
+                  <Button type="submit" class="w-full">
+                    Log in
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        }
+      >
+        {/* Navigation bar */}
+        <nav class="border-b bg-card">
+          <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+            <div class="flex items-center gap-1">
+              <span class="mr-4 font-semibold">AIGuidebook</span>
+              {NAV_STUDENT.map((item) => (
+                <Button
+                  variant={page() === item.page ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setPage(item.page)}
+                >
+                  {item.label}
+                </Button>
+              ))}
+              <Show when={user()!.role === "admin"}>
+                <span class="mx-2 text-border">|</span>
+                {NAV_ADMIN.map((item) => (
+                  <Button
+                    variant={page() === item.page ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setPage(item.page)}
+                  >
+                    {item.label}
+                  </Button>
+                ))}
+              </Show>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm text-muted-foreground">
+                {user()!.name} ({user()!.role})
+              </span>
+              <Button variant="outline" size="sm" onClick={logout}>
+                Log out
               </Button>
-            </form>
-          </CardContent>
-        </Card>
-      )}
+            </div>
+          </div>
+        </nav>
+
+        {/* Page content */}
+        <Switch>
+          <Match when={page() === "log"}>
+            <LogUsage />
+          </Match>
+          <Match when={page() === "history"}>
+            <UsageHistory />
+          </Match>
+          <Match when={page() === "declare"}>
+            <SubmitDeclaration />
+          </Match>
+          <Match when={page() === "classifications"}>
+            <Classifications />
+          </Match>
+          <Match when={page() === "alerts"}>
+            <Alerts />
+          </Match>
+        </Switch>
+      </Show>
       <Toaster richColors closeButton />
     </div>
+    </Show>
   );
 }
 

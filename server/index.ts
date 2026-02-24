@@ -28,6 +28,18 @@ app.onError(async (err, c) => {
 import authRoutes from "./routes/auth";
 app.route("/api/auth", authRoutes);
 
+import logsRoutes from "./routes/logs";
+app.route("/api/logs", logsRoutes);
+
+import declarationsRoutes from "./routes/declarations";
+app.route("/api/declarations", declarationsRoutes);
+
+import classificationsRoutes from "./routes/classifications";
+app.route("/api/classifications", classificationsRoutes);
+
+import alertsRoutes from "./routes/alerts";
+app.route("/api/alerts", alertsRoutes);
+
 // OpenAPI spec + docs
 app.doc("/openapi", {
   openapi: "3.1.0",
