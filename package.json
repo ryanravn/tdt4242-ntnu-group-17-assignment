@@ -1,0 +1,45 @@
+{
+  "name": "aiguidebook",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n api,web,types \"bun run dev:api\" \"bun run dev:web\" \"bun run dev:types\"",
+    "dev:api": "bun run --hot server/index.ts",
+    "dev:web": "vite",
+    "dev:types": "bun run scripts/watch-api-types.ts",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "NODE_ENV=production bun run server/index.ts",
+    "test": "bun test",
+    "db:generate": "bunx drizzle-kit generate",
+    "db:push": "bunx drizzle-kit push",
+    "db:studio": "bunx drizzle-kit studio",
+    "db:seed": "bun run server/db/seed.ts",
+    "api-types": "bun run scripts/generate-api-types.ts"
+  },
+  "dependencies": {
+    "@hono/zod-openapi": "^0.19.6",
+    "@scalar/hono-api-reference": "^0.5.183",
+    "drizzle-orm": "^0.45.1",
+    "hono": "^4.7.5",
+    "postgres": "^3.4.7",
+    "solid-js": "^1.9.10",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.4",
+    "@tanstack/router-plugin": "^1.158.0",
+    "@tanstack/solid-router": "^1.158.0",
+    "@tanstack/solid-query": "^5.90.20",
+    "@types/bun": "latest",
+    "concurrently": "^9.1.2",
+    "drizzle-kit": "^0.31.1",
+    "openapi-fetch": "^0.15.0",
+    "openapi-typescript": "^7.10.1",
+    "tailwindcss": "^4.1.4",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-solid": "^2.11.10"
+  }
+}

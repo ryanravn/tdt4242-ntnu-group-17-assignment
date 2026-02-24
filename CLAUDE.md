@@ -24,9 +24,27 @@ Hono + @hono/zod-openapi | Drizzle ORM + PostgreSQL | SolidJS + TanStack Router 
 
 Backend-first TDD. Tests use `app.request()` directly against the Hono app (no HTTP server, no openapi-fetch). Bun test runner.
 
+## Project Layout
+
+- `server/` — Hono backend (routes, services, db, auth)
+- `client/` — SolidJS frontend (routes, components, lib)
+- `tests/` — backend TDD tests
+- `scripts/` — type generation tooling
+- Single `package.json` at root
+
+## Commands
+
+- `bun run dev` — API + Vite + type watcher (concurrently)
+- `bun test` — run backend tests
+- `bun run api-types` — regenerate frontend types from OpenAPI spec
+- `bun run db:push` — push Drizzle schema to Postgres
+- `bun run db:seed` — seed demo data
+
 ## Conventions
 
 - Single project, not a monorepo
 - Scaffold with CLI tools (`bunx create-hono`, `bunx create-vite`) instead of generating boilerplate from scratch
 - Pre-seeded students and assignments (no CRUD for those)
 - Simple auth via Hono + Postgres
+- API routes use `OpenAPIHono` + `createRoute()` with Zod schemas
+- Frontend types auto-generated from `/openapi` endpoint via `openapi-typescript`

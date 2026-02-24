@@ -23,22 +23,24 @@ Single-project full-stack application. Hono serves both the REST API and the bui
 
 ```
 /
-├── src/
-│   ├── server/          # Hono backend
-│   │   ├── index.ts     # Hono app entry, serves API + static frontend
-│   │   ├── routes/      # API route handlers (one file per resource)
-│   │   ├── services/    # Business logic (risk classification, comparison)
-│   │   ├── db/          # Drizzle schema, migrations, seed data
-│   │   └── lib/         # Auth, middleware, helpers
-│   └── client/          # SolidJS frontend
-│       ├── routes/      # TanStack Router file-based routes
-│       ├── components/  # UI components
-│       ├── lib/         # API client, auth context, utilities
-│       └── main.tsx     # SolidJS entry point
-├── tests/               # Backend tests (TDD)
+├── server/              # Hono backend
+│   ├── index.ts         # Hono app entry (OpenAPIHono), serves API + static frontend
+│   ├── routes/          # API route handlers (one file per resource)
+│   ├── services/        # Business logic (risk classification, comparison)
+│   ├── db/              # Drizzle schema, migrations, seed data
+│   └── lib/             # Auth, middleware, helpers
+├── client/              # SolidJS frontend
+│   ├── routes/          # TanStack Router file-based routes
+│   ├── components/      # UI components
+│   ├── lib/             # API client (openapi-fetch), auth context, generated types
+│   ├── App.tsx          # Root component
+│   └── index.tsx        # SolidJS entry point
+├── tests/               # Backend tests (TDD, app.request())
+├── scripts/             # Type generation, dev tooling
+├── index.html           # Vite entry HTML
 ├── vite.config.ts       # Builds frontend, proxies /api to Hono in dev
-├── package.json
-└── drizzle.config.ts
+├── drizzle.config.ts    # Drizzle ORM config
+└── package.json         # Single package.json for everything
 ```
 
 ## Dev Setup
