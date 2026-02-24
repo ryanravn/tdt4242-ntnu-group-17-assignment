@@ -15,6 +15,10 @@ Assignments and students are pre-seeded data. The module covers 8 functional req
 - **Risk classifications** — computed per student per assignment: Low, Medium, or High, with discrepancy details
 - **Alerts** — created automatically when a classification is High
 
+## Prerequisites
+
+Authentication (login, JWT tokens, `/api/auth/*` endpoints) is infrastructure that supports all requirements below. It is not a standalone requirement but must be implemented first so that "authenticated student" and "admin" preconditions are satisfiable.
+
 ## Functional Requirements
 
 ### RE-09: Log AI Usage

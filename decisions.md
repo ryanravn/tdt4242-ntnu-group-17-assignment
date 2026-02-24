@@ -15,7 +15,8 @@ Single-project full-stack application. Hono serves both the REST API and the bui
 | **Frontend** | SolidJS + Vite | Reactive, fast, small bundle |
 | **Routing** | TanStack Router (SolidJS) | File-based, type-safe routing |
 | **API Client** | `openapi-fetch` | Type-safe HTTP client generated from the OpenAPI spec |
-| **UI Components** | Kobalte (`@kobalte/core`) | Accessible, unstyled SolidJS primitives, styled with Tailwind |
+| **UI Components** | Kobalte + CVA + tailwind-merge | shadcn-style components: Kobalte primitives, CVA for variants, `cn()` utility |
+| **Container** | Podman (compose) | Postgres runs via `podman compose up -d` |
 | **Styling** | Tailwind CSS | Utility-first, works with Kobalte |
 | **Testing** | Bun test runner + `app.request()` | Backend-first TDD — tests call Hono directly, no HTTP server or generated client needed |
 

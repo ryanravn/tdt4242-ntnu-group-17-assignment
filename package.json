@@ -20,12 +20,19 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
     "@hono/zod-openapi": "^0.19.6",
+    "@kobalte/core": "^0.13.11",
     "@scalar/hono-api-reference": "^0.5.183",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.1",
     "hono": "^4.7.5",
+    "lucide-solid": "^0.575.0",
     "postgres": "^3.4.7",
     "solid-js": "^1.9.10",
+    "solid-sonner": "^0.2.8",
+    "tailwind-merge": "^3.5.0",
     "zod": "^3.24.4"
   },
   "devDependencies": {
