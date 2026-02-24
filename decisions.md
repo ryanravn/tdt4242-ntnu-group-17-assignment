@@ -13,8 +13,8 @@ Single-project full-stack application. Hono serves both the REST API and the bui
 | **Database** | PostgreSQL + Drizzle ORM | Relational model fits the data (students, assignments, logs, declarations). Drizzle for type-safe queries and migrations |
 | **Auth** | Simple session/JWT via Hono + Postgres | No external auth service. Students and admins are seeded. Basic login with hashed passwords |
 | **Frontend** | SolidJS + Vite | Reactive, fast, small bundle |
-| **Routing** | TanStack Router (SolidJS) | File-based, type-safe routing |
-| **API Client** | `openapi-fetch` | Type-safe HTTP client generated from the OpenAPI spec |
+| **Routing** | Manual signal-based (`App.tsx`) | Simple page switching via SolidJS signals — no router library needed for this scope |
+| **API Client** | Thin `fetch` wrapper (`client/lib/api.ts`) | Auto-attaches JWT, typed response methods per endpoint. `openapi-typescript` generates types from the spec but the client uses plain fetch, not `openapi-fetch` |
 | **UI Components** | Kobalte + CVA + tailwind-merge | shadcn-style components: Kobalte primitives, CVA for variants, `cn()` utility |
 | **Container** | Podman (compose) | Postgres runs via `podman compose up -d` |
 | **Styling** | Tailwind CSS | Utility-first, works with Kobalte |
@@ -27,13 +27,11 @@ Single-project full-stack application. Hono serves both the REST API and the bui
 ├── server/              # Hono backend
 │   ├── index.ts         # Hono app entry (OpenAPIHono), serves API + static frontend
 │   ├── routes/          # API route handlers (one file per resource)
-│   ├── services/        # Business logic (risk classification, comparison)
 │   ├── db/              # Drizzle schema, migrations, seed data
 │   └── lib/             # Auth, middleware, helpers
 ├── client/              # SolidJS frontend
-│   ├── routes/          # TanStack Router file-based routes
 │   ├── components/      # UI components
-│   ├── lib/             # API client (openapi-fetch), auth context, generated types
+│   ├── lib/             # API client (fetch wrapper), generated types
 │   ├── App.tsx          # Root component
 │   └── index.tsx        # SolidJS entry point
 ├── tests/               # Backend tests (TDD, app.request())
@@ -63,8 +61,8 @@ One process, one port. In dev, Vite proxies API calls to Hono. In production, Ho
 **Why backend-first TDD?**
 Per our prompting strategy (task 2.1), we write failing backend tests first, then implement. The frontend is built last, consuming the verified API.
 
-**Why `app.request()` instead of `openapi-fetch` for tests?**
-Tests must work before any implementation exists. `openapi-fetch` is generated from the OpenAPI spec, which evolves as we add routes — tests that depend on it would break or need regenerating during red-green cycles. Instead, tests import the Hono app directly and call `app.request()`. No running server, no generated client, no spec dependency. Fast and self-contained.
+**Why `app.request()` for tests?**
+Tests import the Hono app directly and call `app.request()`. No running server, no generated client, no spec dependency. Fast and self-contained.
 
 **Why PostgreSQL over SQLite?**
 The data model is relational (foreign keys between students, assignments, logs, declarations, classifications). PostgreSQL handles this cleanly and is what students will encounter professionally.

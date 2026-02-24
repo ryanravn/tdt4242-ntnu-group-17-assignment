@@ -37,7 +37,7 @@ Tests use `app.request()` directly against the Hono app (no HTTP server, no open
 
 1. **Backend TDD** — all API routes tested and green (RE-09 through RE-16)
 2. **Generate types** — `bun run api-types` to create `client/lib/api-types.d.ts` from the OpenAPI spec
-3. **Frontend** — SolidJS UI consuming the verified API via `openapi-fetch`
+3. **Frontend** — SolidJS UI consuming the verified API via typed fetch wrapper
 
 ## Project Layout
 
