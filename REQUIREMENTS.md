@@ -8,12 +8,12 @@ Assignments and students are pre-seeded data. The module covers 8 functional req
 
 ## Data Model
 
-- **Students** — pre-seeded (id, name, email, role)
-- **Assignments** — pre-seeded (id, title, course)
-- **Log entries** — student logs AI usage: tool used (ChatGPT, Copilot, Claude, Other), task type (grammar, summarizing, drafting, coding, direct answers), linked to an assignment, timestamped
-- **Declarations** — student declares tools used for an assignment at submission time
-- **Risk classifications** — computed per student per assignment: Low, Medium, or High, with discrepancy details
-- **Alerts** — created automatically when a classification is High
+- **Students** - pre-seeded (id, name, email, role)
+- **Assignments** - pre-seeded (id, title, course)
+- **Log entries** - student logs AI usage: tool used (ChatGPT, Copilot, Claude, Other), task type (grammar, summarizing, drafting, coding, direct answers), linked to an assignment, timestamped
+- **Declarations** - student declares tools used for an assignment at submission time
+- **Risk classifications** - computed per student per assignment: Low, Medium, or High, with discrepancy details
+- **Alerts** - created automatically when a classification is High
 
 ## Prerequisites
 
@@ -136,21 +136,21 @@ Authentication (login, JWT tokens, `/api/auth/*` endpoints) is infrastructure th
 
 ## Dependency & Implementation Order
 
-1. **NFR-01, NFR-02** — Performance constraints shape API design.
-2. **RE-09** — Core logging. Everything depends on this.
-3. **RE-10** — Assignment validation. Refines RE-09.
-4. **RE-11** — Declarations. Depends on assignments existing.
-5. **RE-12** — Usage history. Reads log data from RE-09/RE-10.
-6. **RE-13** — Risk classification logic. Consumes log data.
-7. **RE-14** — Declaration vs. log comparison. Needs both logs and declarations.
-8. **RE-15** — Auto-trigger on submit. Wires RE-13 + RE-14 into RE-11.
-9. **RE-16** — Alerts. Depends on RE-15 producing classifications.
+1. **NFR-01, NFR-02** - Performance constraints shape API design.
+2. **RE-09** - Core logging. Everything depends on this.
+3. **RE-10** - Assignment validation. Refines RE-09.
+4. **RE-11** - Declarations. Depends on assignments existing.
+5. **RE-12** - Usage history. Reads log data from RE-09/RE-10.
+6. **RE-13** - Risk classification logic. Consumes log data.
+7. **RE-14** - Declaration vs. log comparison. Needs both logs and declarations.
+8. **RE-15** - Auto-trigger on submit. Wires RE-13 + RE-14 into RE-11.
+9. **RE-16** - Alerts. Depends on RE-15 producing classifications.
 
 ## Sources
 
-- [Task 1.1 - Requirements Elicitation](tasks/1.1-requirements-elicitation.md) — Original requirements and interviews
-- [Task 1.2 - Requirements Overview](tasks/1.2-requirements-overview.md) — Peer review
-- [Task 1.3 - Dependency Analysis](tasks/1.3-requirement-dependency-analysis-and-categorization.md) — Dependency graph
-- [Task 2.1 - Prompting Strategy](tasks/2.1-prompting-strategy.md) — Selected scope and prompting strategy
-- [Task 2.2 - Code Generation](tasks/2.2-code-generation.md) — Code generation task description
-- [Project Overview](tasks/overview.md) — Project and course description
+- [Task 1.1 - Requirements Elicitation](tasks/1.1-requirements-elicitation.md) - Original requirements and interviews
+- [Task 1.2 - Requirements Overview](tasks/1.2-requirements-overview.md) - Peer review
+- [Task 1.3 - Dependency Analysis](tasks/1.3-requirement-dependency-analysis-and-categorization.md) - Dependency graph
+- [Task 2.1 - Prompting Strategy](tasks/2.1-prompting-strategy.md) - Selected scope and prompting strategy
+- [Task 2.2 - Code Generation](tasks/2.2-code-generation.md) - Code generation task description
+- [Project Overview](tasks/overview.md) - Project and course description

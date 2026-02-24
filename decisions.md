@@ -13,12 +13,12 @@ Single-project full-stack application. Hono serves both the REST API and the bui
 | **Database** | PostgreSQL + Drizzle ORM | Relational model fits the data (students, assignments, logs, declarations). Drizzle for type-safe queries and migrations |
 | **Auth** | Simple session/JWT via Hono + Postgres | No external auth service. Students and admins are seeded. Basic login with hashed passwords |
 | **Frontend** | SolidJS + Vite | Reactive, fast, small bundle |
-| **Routing** | Manual signal-based (`App.tsx`) | Simple page switching via SolidJS signals — no router library needed for this scope |
+| **Routing** | Manual signal-based (`App.tsx`) | Simple page switching via SolidJS signals - no router library needed for this scope |
 | **API Client** | Thin `fetch` wrapper (`client/lib/api.ts`) | Auto-attaches JWT, typed response methods per endpoint. `openapi-typescript` generates types from the spec but the client uses plain fetch, not `openapi-fetch` |
 | **UI Components** | Kobalte + CVA + tailwind-merge | shadcn-style components: Kobalte primitives, CVA for variants, `cn()` utility |
 | **Container** | Podman (compose) | Postgres runs via `podman compose up -d` |
 | **Styling** | Tailwind CSS | Utility-first, works with Kobalte |
-| **Testing** | Bun test runner + `app.request()` | Backend-first TDD — tests call Hono directly, no HTTP server or generated client needed |
+| **Testing** | Bun test runner + `app.request()` | Backend-first TDD - tests call Hono directly, no HTTP server or generated client needed |
 
 ## Project Structure
 
@@ -44,11 +44,11 @@ Single-project full-stack application. Hono serves both the REST API and the bui
 
 ## Dev Setup
 
-- `bun run dev` — starts Hono backend + Vite dev server (with proxy)
-- `bun run test` — runs backend tests
-- `bun run build` — Vite builds frontend to `dist/`, Hono serves it
-- `bun run db:push` — push Drizzle schema to Postgres
-- `bun run db:seed` — seed students and assignments
+- `bun run dev` - starts Hono backend + Vite dev server (with proxy)
+- `bun run test` - runs backend tests
+- `bun run build` - Vite builds frontend to `dist/`, Hono serves it
+- `bun run db:push` - push Drizzle schema to Postgres
+- `bun run db:seed` - seed students and assignments
 
 ## Key Decisions
 
