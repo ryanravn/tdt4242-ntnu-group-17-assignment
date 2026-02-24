@@ -22,7 +22,22 @@ Hono + @hono/zod-openapi | Drizzle ORM + PostgreSQL | SolidJS + TanStack Router 
 
 ## Testing
 
-Backend-first TDD. Tests use `app.request()` directly against the Hono app (no HTTP server, no openapi-fetch). Bun test runner.
+Backend-first TDD with strict red-green-refactor:
+
+1. Write **one** failing test (`bun test tests/foo.test.ts`)
+2. Verify it fails for the right reason (feature missing, not typo)
+3. Write **minimal** code to make it pass
+4. Verify green, then lint (`bun run lint`)
+5. Refactor if needed, stay green
+6. Next test
+
+Tests use `app.request()` directly against the Hono app (no HTTP server, no openapi-fetch). Bun test runner.
+
+## Development Order
+
+1. **Backend TDD** — all API routes tested and green (RE-09 through RE-16)
+2. **Generate types** — `bun run api-types` to create `client/lib/api-types.d.ts` from the OpenAPI spec
+3. **Frontend** — SolidJS UI consuming the verified API via `openapi-fetch`
 
 ## Project Layout
 

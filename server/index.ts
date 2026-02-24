@@ -24,8 +24,9 @@ app.onError(async (err, c) => {
   return c.json({ message: "Internal server error" }, 500);
 });
 
-// TODO: mount routes here
-// app.route("/api", logRoutes);
+// Routes
+import authRoutes from "./routes/auth";
+app.route("/api/auth", authRoutes);
 
 // OpenAPI spec + docs
 app.doc("/openapi", {
