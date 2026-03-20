@@ -1,3 +1,6 @@
+/**
+ * Test IDs: tasks/3.1-test-plan.md (Task 3.1) — TC-AUTH-01 … TC-AUTH-07.
+ */
 import { describe, it, expect } from "bun:test";
 import app from "../server/index";
 
@@ -13,6 +16,7 @@ async function login(email = "student@ntnu.no", password = "password123") {
 }
 
 describe("POST /api/auth/login", () => {
+  // TC-AUTH-01
   it("returns a token for valid credentials", async () => {
     const res = await app.request("/api/auth/login", {
       method: "POST",
@@ -31,6 +35,7 @@ describe("POST /api/auth/login", () => {
     expect(body.user).not.toHaveProperty("password");
   });
 
+  // TC-AUTH-02
   it("returns 401 for wrong password", async () => {
     const res = await app.request("/api/auth/login", {
       method: "POST",
@@ -46,6 +51,7 @@ describe("POST /api/auth/login", () => {
     expect(body.message).toBe("Invalid credentials");
   });
 
+  // TC-AUTH-03
   it("returns 401 for non-existent user", async () => {
     const res = await app.request("/api/auth/login", {
       method: "POST",
@@ -61,6 +67,7 @@ describe("POST /api/auth/login", () => {
     expect(body.message).toBe("Invalid credentials");
   });
 
+  // TC-AUTH-04
   it("returns 400 for missing fields", async () => {
     const res = await app.request("/api/auth/login", {
       method: "POST",
@@ -73,6 +80,7 @@ describe("POST /api/auth/login", () => {
 });
 
 describe("GET /api/auth/me", () => {
+  // TC-AUTH-05
   it("returns the current user when authenticated", async () => {
     const token = await login();
     const res = await app.request("/api/auth/me", {
@@ -86,11 +94,13 @@ describe("GET /api/auth/me", () => {
     expect(body).not.toHaveProperty("password");
   });
 
+  // TC-AUTH-06
   it("returns 401 without a token", async () => {
     const res = await app.request("/api/auth/me");
     expect(res.status).toBe(401);
   });
 
+  // TC-AUTH-07
   it("returns 401 with an invalid token", async () => {
     const res = await app.request("/api/auth/me", {
       headers: { Authorization: "Bearer garbage" },

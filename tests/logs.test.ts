@@ -1,3 +1,6 @@
+/**
+ * Test IDs: tasks/3.1-test-plan.md (Task 3.1) — TC-RE09-*, TC-RE10-*.
+ */
 import { describe, it, expect } from "bun:test";
 import app from "../server/index";
 
@@ -15,6 +18,7 @@ async function login(email = "student@ntnu.no", password = "password123") {
 }
 
 describe("POST /api/logs", () => {
+  // TC-RE09-01
   it("creates a log entry with valid data", async () => {
     const token = await login();
     const res = await app.request("/api/logs", {
@@ -39,6 +43,7 @@ describe("POST /api/logs", () => {
     expect(body.createdAt).toBeString();
   });
 
+  // TC-RE09-02
   it("returns 400 for missing tool", async () => {
     const token = await login();
     const res = await app.request("/api/logs", {
@@ -56,6 +61,7 @@ describe("POST /api/logs", () => {
     expect(res.status).toBe(400);
   });
 
+  // TC-RE09-03
   it("returns 400 for missing taskTypes", async () => {
     const token = await login();
     const res = await app.request("/api/logs", {
@@ -73,6 +79,7 @@ describe("POST /api/logs", () => {
     expect(res.status).toBe(400);
   });
 
+  // TC-RE09-04
   it("returns 400 for missing assignmentId", async () => {
     const token = await login();
     const res = await app.request("/api/logs", {
@@ -90,6 +97,7 @@ describe("POST /api/logs", () => {
     expect(res.status).toBe(400);
   });
 
+  // TC-RE09-05
   it("returns 401 without auth", async () => {
     const res = await app.request("/api/logs", {
       method: "POST",
@@ -106,6 +114,7 @@ describe("POST /api/logs", () => {
 });
 
 describe("RE-10: Assignment validation", () => {
+  // TC-RE10-01
   it("returns 404 for non-existent assignment", async () => {
     const token = await login();
     const res = await app.request("/api/logs", {
@@ -124,6 +133,7 @@ describe("RE-10: Assignment validation", () => {
     expect(res.status).toBe(404);
   });
 
+  // TC-RE10-02
   it("stores the assignment ID in the log entry", async () => {
     const token = await login();
 

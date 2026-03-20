@@ -1,3 +1,7 @@
+/**
+ * Test IDs: tasks/3.1-test-plan.md (Task 3.1) — TC-RE13-*, TC-RE14-*,
+ * TC-RE15-02, TC-RE16-*.
+ */
 import { describe, it, expect, beforeAll } from "bun:test";
 import app from "../server/index";
 import { db } from "../server/db/client";
@@ -56,6 +60,7 @@ beforeAll(async () => {
 });
 
 describe("RE-13: Risk Classification", () => {
+  // TC-RE13-01
   it("classifies low risk for minor tasks with low frequency", async () => {
     const token = await login();
 
@@ -82,6 +87,7 @@ describe("RE-13: Risk Classification", () => {
     expect(match.riskLevel).toBe("low");
   });
 
+  // TC-RE13-02
   it("classifies medium risk for frequent substantial tasks", async () => {
     const token = await login();
 
@@ -106,6 +112,7 @@ describe("RE-13: Risk Classification", () => {
     expect(match.riskLevel).toBe("medium");
   });
 
+  // TC-RE13-03
   it("classifies high risk for direct answer usage", async () => {
     const token = await login();
 
@@ -142,6 +149,7 @@ describe("RE-14: Declaration vs Log Comparison", () => {
     await db.delete(logs);
   });
 
+  // TC-RE14-01 (also drives high risk via undeclared tools per RE-13)
   it("detects undeclared tools", async () => {
     const token = await login();
 
@@ -161,6 +169,7 @@ describe("RE-14: Declaration vs Log Comparison", () => {
     expect(match.undeclaredTools).toContain("chatgpt");
   });
 
+  // TC-RE14-02
   it("detects declared but not logged tools", async () => {
     const token = await login();
 
@@ -180,6 +189,7 @@ describe("RE-14: Declaration vs Log Comparison", () => {
     expect(match.declaredNotLogged).toContain("copilot");
   });
 
+  // TC-RE14-03
   it("no discrepancies when declaration matches logs", async () => {
     const token = await login();
 
@@ -204,6 +214,7 @@ describe("RE-14: Declaration vs Log Comparison", () => {
 });
 
 describe("RE-15: Auto-Classify on Declaration Submit", () => {
+  // TC-RE15-02
   it("GET /api/classifications returns all classifications", async () => {
     const adminToken = await login("admin@ntnu.no", "password123");
     const res = await app.request("/api/classifications", {
@@ -224,6 +235,7 @@ describe("RE-16: Alerts for High Risk", () => {
     await db.delete(logs);
   });
 
+  // TC-RE16-01
   it("creates an alert when classification is high risk", async () => {
     const token = await login();
 
@@ -242,6 +254,7 @@ describe("RE-16: Alerts for High Risk", () => {
     expect(match.studentId).toBeDefined();
   });
 
+  // TC-RE16-02
   it("does not create alert for low/medium risk", async () => {
     const token = await login();
 
@@ -259,6 +272,7 @@ describe("RE-16: Alerts for High Risk", () => {
     expect(match).toBeUndefined();
   });
 
+  // TC-RE16-03
   it("GET /api/alerts returns all alerts", async () => {
     const adminToken = await login("admin@ntnu.no", "password123");
     const res = await app.request("/api/alerts", {

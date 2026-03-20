@@ -1,3 +1,6 @@
+/**
+ * Test IDs: tasks/3.1-test-plan.md (Task 3.1) — TC-RE11-*, TC-RE15-01.
+ */
 import { describe, it, expect, beforeAll } from "bun:test";
 import app from "../server/index";
 import { db } from "../server/db/client";
@@ -25,6 +28,7 @@ async function login(email = "student@ntnu.no", password = "password123") {
 }
 
 describe("POST /api/declarations", () => {
+  // TC-RE11-01
   it("creates a declaration with valid data", async () => {
     const token = await login();
     const res = await app.request("/api/declarations", {
@@ -47,6 +51,7 @@ describe("POST /api/declarations", () => {
     expect(body.createdAt).toBeDefined();
   });
 
+  // TC-RE11-02
   it("returns 409 when declaration already exists for student+assignment", async () => {
     const token = await login();
 
@@ -79,6 +84,7 @@ describe("POST /api/declarations", () => {
     expect(second.status).toBe(409);
   });
 
+  // TC-RE11-03
   it("returns 400 for missing assignmentId", async () => {
     const token = await login();
     const res = await app.request("/api/declarations", {
@@ -95,6 +101,7 @@ describe("POST /api/declarations", () => {
     expect(res.status).toBe(400);
   });
 
+  // TC-RE11-04
   it("returns 400 for missing declaredTools", async () => {
     const token = await login();
     const res = await app.request("/api/declarations", {
@@ -111,6 +118,7 @@ describe("POST /api/declarations", () => {
     expect(res.status).toBe(400);
   });
 
+  // TC-RE11-05
   it("returns 401 without auth", async () => {
     const res = await app.request("/api/declarations", {
       method: "POST",
@@ -124,6 +132,7 @@ describe("POST /api/declarations", () => {
     expect(res.status).toBe(401);
   });
 
+  // TC-RE15-01 (auto-classify after POST /api/declarations; see also risk.test.ts)
   it("triggers risk classification on creation", async () => {
     const token = await login();
 

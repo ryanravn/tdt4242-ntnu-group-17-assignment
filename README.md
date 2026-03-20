@@ -46,11 +46,25 @@ bun run start
 
 ## Test
 
+Install dependencies first (`bun install`). Backend tests live under `tests/` only; E2E uses Playwright separately.
+
 ```bash
-bun test
+bun run test
+# same as: bun test tests
 ```
 
-38 backend tests covering all requirements (RE-09 through RE-16).
+38 backend tests covering all requirements (RE-09 through RE-16). Use **`bun run test`** or **`bun test tests`** so Playwright files under `e2e/` are not picked up by Bun’s runner.
+
+**Supplementary checks (Task 3.1 non-`bun test` cases):**
+
+```bash
+# API scripts: TC-RE12-05, TC-NFR-01/02, TC-NFR-SEC-01
+bun run test:manual
+
+# Or individually: test:manual:re12-05 | test:manual:nfr | test:manual:sec
+```
+
+**Playwright (TC-SYS-*):** with `bun run dev` running, `bunx playwright install` once, then `bun run test:e2e`. See `e2e/README.md` and `scripts/manual-tests/README.md`.
 
 ## Lint
 

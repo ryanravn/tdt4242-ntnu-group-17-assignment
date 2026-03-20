@@ -1,3 +1,7 @@
+/**
+ * Test IDs: tasks/3.1-test-plan.md (Task 3.1) — TC-RE12-*.
+ * (TC-RE12-05 empty-array case is manual / optional per test plan.)
+ */
 import { describe, it, expect, beforeAll } from "bun:test";
 import app from "../server/index";
 import { db } from "../server/db/client";
@@ -38,6 +42,7 @@ async function createLog(
 }
 
 describe("GET /api/logs", () => {
+  // TC-RE12-01
   it("returns log entries for the authenticated student", async () => {
     const token = await login();
 
@@ -60,6 +65,7 @@ describe("GET /api/logs", () => {
     expect(logs.length).toBeGreaterThanOrEqual(1);
   });
 
+  // TC-RE12-02
   it("returns entries ordered by most recent first", async () => {
     const token = await login();
 
@@ -92,6 +98,7 @@ describe("GET /api/logs", () => {
     expect(firstDate).toBeGreaterThanOrEqual(secondDate);
   });
 
+  // TC-RE12-03
   it("filters by assignment_id query parameter", async () => {
     const token = await login();
 
@@ -124,6 +131,7 @@ describe("GET /api/logs", () => {
     }
   });
 
+  // TC-RE12-04
   it("filters by date range (from and to)", async () => {
     const token = await login();
 
@@ -161,6 +169,7 @@ describe("GET /api/logs", () => {
     expect(logsFuture.length).toBe(0);
   });
 
+  // TC-RE12-01 (supplement): RE-12 response must always be a JSON array.
   it("returns an array response (correct format)", async () => {
     const token = await login();
 
@@ -173,6 +182,7 @@ describe("GET /api/logs", () => {
     expect(Array.isArray(logs)).toBe(true);
   });
 
+  // TC-RE12-06
   it("returns 401 without auth", async () => {
     const res = await app.request("/api/logs");
     expect(res.status).toBe(401);

@@ -21,7 +21,7 @@ AI Guidebook for Students is a student-centred web application developed to supp
 | Prompting Strategy | 2.1 | 2026-03-02 |
 | Code Generation | 2.2 | 2026-03-02 |
 | Code Review | 2.3 | 2026-03-02 |
-| Test Plan | 3.1 | TBD |
+| Test Plan | 3.1 | 2026-04-10 |
 | Unit Test Execution | 3.2 | TBD |
 | System Test Execution | 3.3 | TBD |
 | Responsible AI Reflection | 3.4 | TBD |
