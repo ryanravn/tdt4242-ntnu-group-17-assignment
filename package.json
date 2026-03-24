@@ -12,6 +12,7 @@
     "preview": "vite preview",
     "start": "NODE_ENV=production bun run server/index.ts",
     "test": "bun test tests",
+    "test:coverage": "bun test tests --coverage",
     "test:manual": "bun run scripts/manual-tests/run-all-manual.ts",
     "test:manual:re12-05": "bun run scripts/manual-tests/tc-re12-05-empty-logs.ts",
     "test:manual:nfr": "bun run scripts/manual-tests/tc-nfr-performance.ts",
